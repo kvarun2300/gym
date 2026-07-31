@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background: #b3001b;
+    color: #fff;
+  }
+  body {
+    background-color: #0b0b0b;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.01em;
+  }
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Premium glassmorphism card - the base surface used across the app */
+  .glass {
+    @apply bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-glass;
+  }
+  .glass-hover {
+    @apply transition-all duration-300 hover:bg-white/[0.07] hover:border-white/[0.16] hover:-translate-y-1;
+  }
+
+  /* Kinetic, angled CTA button - the counterpoint to the soft glass cards */
+  .btn-cta {
+    @apply relative inline-flex items-center justify-center gap-2 px-8 py-3.5 font-accent font-semibold text-sm tracking-wide uppercase text-white bg-crimson transition-all duration-300;
+    clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+  }
+  .btn-cta:hover {
+    @apply bg-crimson-light shadow-glow-crimson;
+    transform: translateY(-2px);
+  }
+  .btn-ghost {
+    @apply relative inline-flex items-center justify-center gap-2 px-8 py-3.5 font-accent font-semibold text-sm tracking-wide uppercase text-white border border-white/20 transition-all duration-300 hover:border-crimson-light hover:text-crimson-light;
+    clip-path: polygon(6% 0, 100% 0, 94% 100%, 0 100%);
+  }
+
+  .eyebrow {
+    @apply font-accent text-xs font-semibold tracking-[0.25em] uppercase text-crimson-light;
+  }
+
+  /* The brand ring motif, echoing the dumbbell-in-ring logo mark, reused
+     structurally throughout the site (hero backdrop, stat rings, avatar frames) */
+  .ring-mark {
+    @apply absolute rounded-full border border-crimson-light/20;
+  }
+
+  .section-divider {
+    @apply relative h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl bg-white/[0.05] border border-white/10 px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-all duration-200 focus:border-crimson-light focus:bg-white/[0.08] focus:ring-2 focus:ring-crimson-light/20;
+  }
+
+  .label-field {
+    @apply block font-accent text-xs font-medium tracking-wide uppercase text-white/50 mb-2;
+  }
+}
+
+@layer utilities {
+  .text-gradient-crimson {
+    background: linear-gradient(90deg, #e63946 0%, #b3001b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .mask-fade-bottom {
+    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  }
+}
+
+/* Slim, on-brand scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0b0b;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b3001b;
+}
