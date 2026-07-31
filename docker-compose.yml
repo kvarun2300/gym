@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: xtreme-mysql
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: xtremefitness
+      MYSQL_USER: xtremeuser
+      MYSQL_PASSWORD: password123
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    networks:
+      - xtreme-network
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: gym-backend
+
+    restart: always
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    env_file:
+      - ./backend/.env
+
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: xtremefitness
+      DB_USER: xtremeuser
+      DB_PASSWORD: password123
+      DB_DIALECT: mysql
+      NODE_ENV: production
+
+    ports:
+      - "5000:5000"
+
+    networks:
+      - xtreme-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: gym-frontend
+
+    restart: always
+
+    depends_on:
+      - backend
+
+    ports:
+      - "80:80"
+
+    networks:
+      - xtreme-network
+
+volumes:
+  mysql_data:
+
+networks:
+  xtreme-network:
+    driver: bridge
