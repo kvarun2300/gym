@@ -29,8 +29,7 @@ const errorHandler = (err, req, res, next) => {
     message = 'Invalid JSON payload';
   }
 
-  if (process.env.NODE_ENV === 'development' && statusCode === 500) {
-    console.error(err);
+console.error(err);
   }
 
   res.status(statusCode).json({
